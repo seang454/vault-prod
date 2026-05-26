@@ -20,15 +20,14 @@ sudo apt install -y gpg wget
 Add the HashiCorp GPG key:
 
 ```bash
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-  gpg --dearmor | \
-  sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+wget -O - https://apt.releases.hashicorp.com/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 ```
 
 Add the HashiCorp repository:
 
 ```bash
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | \
   sudo tee /etc/apt/sources.list.d/hashicorp.list
 ```
 
@@ -116,3 +115,24 @@ Install again with:
 sudo apt update
 sudo apt install -y vault
 ```
+
+## Fix `NO_PUBKEY AA16FCBCA621E701`
+
+If `sudo apt update` shows:
+
+```text
+NO_PUBKEY AA16FCBCA621E701
+E: The repository 'https://apt.releases.hashicorp.com jammy InRelease' is not signed.
+```
+
+replace the local HashiCorp keyring and update again:
+
+```bash
+sudo rm -f /usr/share/keyrings/hashicorp-archive-keyring.gpg
+wget -O - https://apt.releases.hashicorp.com/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+sudo apt update
+sudo apt install -y vault
+```
+
+If `gpg` asks before overwriting the file, type `y`.
