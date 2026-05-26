@@ -94,11 +94,31 @@ docker exec -it vault-prod vault status
 
 ## 6. Login to Vault
 
+### Option A: Login from inside the Vault container
+
 ```bash
 docker exec -it vault-prod vault login
 ```
 
 Paste your **root token** when prompted.
+
+### Option B: Login from your machine using HTTPS
+
+Use this when your Vault is reachable through the domain:
+
+```bash
+export VAULT_ADDR=https://vault.seang.shop
+vault login
+```
+
+`VAULT_ADDR` tells the Vault CLI which HTTPS Vault server to use. After setting it, every `vault` command will use `https://vault.seang.shop` by default.
+
+For Windows PowerShell:
+
+```powershell
+$env:VAULT_ADDR = "https://vault.seang.shop"
+vault login
+```
 
 ---
 
@@ -122,4 +142,40 @@ Read it back:
 
 ```bash
 docker exec -it vault-prod vault kv get secret/test
+```
+
+---
+
+## 9. Store a Kubeconfig File in Vault over HTTPS
+
+Set the Vault HTTPS address:
+
+```bash
+export VAULT_ADDR=https://vault.seang.shop
+```
+
+Login:
+
+```bash
+vault login
+```
+
+Store the whole kubeconfig file as one value:
+
+```bash
+vault kv put secret/kubeconfigs/benzcluster kubeconfig=@benzcluster-kubeconfig.yaml
+```
+
+Read it back:
+
+```bash
+vault kv get secret/kubeconfigs/benzcluster
+```
+
+The stored value can be used by External Secrets with:
+
+```yaml
+remoteRef:
+  key: secret/kubeconfigs/benzcluster
+  property: kubeconfig
 ```
