@@ -16,3 +16,11 @@ kubectl create secret generic {{ .Values.vault.auth.tokenSecretName }} \
   --from-literal={{ .Values.vault.auth.tokenSecretKey }}='<vault-token>' \
   -n {{ .Release.Namespace }}
 
+
+apply helm 
+
+helm upgrade --install vault-kubeconfigs ./charts/vault-kubeconfig-external-secret \
+  -n backend \
+  --create-namespace \
+  --set vault.auth.createTokenSecret=true \
+  --set-string vault.auth.token='<your-vault-token>'
