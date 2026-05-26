@@ -89,6 +89,29 @@ Check the status after unsealing:
 ```bash
 docker exec -it vault-prod vault status
 ```
+it will work
+`
+Key                     Value
+---                     -----
+Seal Type               shamir
+Initialized             true
+Sealed                  false
+Total Shares            5
+Threshold               3
+Version                 1.20.4
+Build Date              2025-09-23T13:22:38Z
+Storage Type            raft
+Cluster Name            vault-cluster-810c61df
+Cluster ID              72b7d9b5-0393-ad43-fe6d-ff8c2a5fb1ac
+Removed From Cluster    false
+HA Enabled              true
+HA Cluster              https://127.0.0.1:8201
+HA Mode                 active
+Active Since            2026-05-26T04:02:43.767818655Z
+Raft Committed Index    37
+Raft Applied Index      37
+
+`
 
 ---
 
