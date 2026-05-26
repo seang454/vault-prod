@@ -69,6 +69,15 @@ Example:
 vault kv put secret/kubeconfigs/benzcluster kubeconfig=@benzcluster-kubeconfig.yaml
 ```
 
+Multiple file as onece
+```bash
+vault kv put secret/kubeconfigs/benzcluster \
+  kubeconfig=@benzcluster-kubeconfig.yaml \
+  ca_cert=@ca.crt \
+  token=@token.txt
+
+```
+
 Read it back:
 
 ```bash
