@@ -1,0 +1,18 @@
+The chart created:
+
+- SecretStore: {{ .Values.secretStore.name }}
+- ExternalSecret: {{ .Values.externalSecret.name }}
+- Target Kubernetes Secret: {{ .Values.externalSecret.targetSecretName }}
+
+Check sync status:
+
+kubectl get secretstore {{ .Values.secretStore.name }} -n {{ .Release.Namespace }}
+kubectl get externalsecret {{ .Values.externalSecret.name }} -n {{ .Release.Namespace }}
+kubectl get secret {{ .Values.externalSecret.targetSecretName }} -n {{ .Release.Namespace }}
+
+If vault.auth.createTokenSecret=false, create the Vault token secret first:
+
+kubectl create secret generic {{ .Values.vault.auth.tokenSecretName }} \
+  --from-literal={{ .Values.vault.auth.tokenSecretKey }}='<vault-token>' \
+  -n {{ .Release.Namespace }}
+

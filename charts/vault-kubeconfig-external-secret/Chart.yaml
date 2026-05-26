@@ -1,0 +1,6 @@
+apiVersion: v2
+name: vault-kubeconfig-external-secret
+description: Sync kubeconfig files from HashiCorp Vault into a Kubernetes Secret using External Secrets Operator.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,31 @@
+nameOverride: ""
+fullnameOverride: ""
+
+vault:
+  server: https://vault.seang.shop
+  kvMountPath: secret
+  kvVersion: v2
+
+  auth:
+    tokenSecretName: vault-token
+    tokenSecretKey: token
+
+    # Keep this empty for GitOps. Create the token secret manually instead.
+    # Example install-time override:
+    # --set vault.auth.createTokenSecret=true --set-string vault.auth.token='hvs.xxxxx'
+    createTokenSecret: false
+    token: ""
+
+secretStore:
+  name: vault-secret-store
+
+externalSecret:
+  name: benzcluster-kubeconfigs
+  refreshInterval: 1h
+  targetSecretName: benzcluster-kubeconfigs
+  vaultKey: kubeconfigs/benzcluster
+  data:
+    - secretKey: config.yaml
+      property: k8s-cluster1
+    - secretKey: config-cluster2.yaml
+      property: k8s-cluster2
